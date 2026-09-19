@@ -1,0 +1,972 @@
+/* =========================================================================
+   HAR INFRA + HAR TRADING COMPANY — Refine layer
+   Loaded LAST (after har-fix.css). Scope:
+     1. Brand logo lockup in header / footer / panels
+     2. Off-canvas sidebar + mobile menu redesign
+     3. Operating Landscape: horizontal swipe track on mobile & tablet
+     4. India + Global map panels: remove letterbox dead space
+     5. Field gallery: one uniform tile size everywhere
+     6. Contact form + contact detail blocks
+   ========================================================================= */
+
+:root {
+    --har-gold-soft: #d8bd7a;
+    --har-panel: linear-gradient(165deg, #04180a 0%, #072a10 48%, #04180a 100%);
+}
+
+/* =========================================================================
+   1. LOGO
+   The lockup art is 1045x360 (≈2.9:1). Sized by width, height auto, so it
+   never distorts and never gets cropped by a parent height.
+   ========================================================================= */
+.header .primary-header-inner .header-logo { display: flex; align-items: center; }
+.header .primary-header-inner .header-logo a {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+}
+.header .primary-header-inner .header-logo img {
+    width: 182px;
+    max-width: 182px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    transition: opacity .3s ease;
+}
+.header .primary-header-inner .header-logo a:hover img { opacity: .85; }
+
+.footer-logo img {
+    width: 200px;
+    max-width: 200px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+@media (max-width: 1599px) {
+    .header .primary-header-inner .header-logo img { width: 172px; max-width: 172px; }
+}
+@media (max-width: 1199px) {
+    .header .primary-header-inner .header-logo img { width: 164px; max-width: 164px; }
+}
+@media (max-width: 991px) {
+    .header .primary-header-inner .header-logo img { width: 158px; max-width: 158px; }
+}
+@media (max-width: 575px) {
+    .header .primary-header-inner .header-logo img { width: 132px !important; max-width: 132px !important; }
+}
+
+/* Header "contact" chip now carries the real phone number */
+.header .primary-header-inner .header-right-wrap .header-contact {
+    text-decoration: none;
+    padding: 8px 4px;
+    border-radius: 12px;
+    transition: opacity .3s ease;
+}
+.header .primary-header-inner .header-right-wrap .header-contact:hover { opacity: .8; }
+.header .primary-header-inner .header-right-wrap .header-contact .icon { font-size: 20px; }
+.header .primary-header-inner .header-right-wrap .header-contact .content .call-number {
+    font-family: var(--tl-ff-body);
+    font-weight: 600;
+    letter-spacing: .01em;
+    white-space: nowrap;
+}
+/* Keep the number visible further down the breakpoint ladder than the
+   template allowed (it used to vanish below 1400px). */
+@media (min-width: 1200px) and (max-width: 1399px) {
+    .header .primary-header-inner .header-right-wrap .header-contact { display: flex !important; }
+    .header .primary-header-inner .header-right-wrap .header-contact .content .call-text { display: none; }
+    .header .primary-header-inner .header-right-wrap .header-contact .content .call-number { font-size: 14px; }
+}
+
+/* =========================================================================
+   2. SIDEBAR  (desktop off-canvas #sidebar-area + mobile .mobile-side-menu)
+   Both panels get the same brand treatment: deep-green ground, gold hairline
+   accents, a real navigation list and real contact details.
+   ========================================================================= */
+.sidebar-area,
+#sidebar-area {
+    width: min(480px, 100vw);
+    background: var(--har-panel);
+    border-left: 1px solid rgba(216, 189, 122, .20);
+    box-shadow: -30px 0 80px rgba(0, 0, 0, .45);
+    padding: 0;
+    scrollbar-width: thin;
+}
+#sidebar-area::-webkit-scrollbar { width: 6px; }
+#sidebar-area::-webkit-scrollbar-track { background: transparent; }
+#sidebar-area::-webkit-scrollbar-thumb { background: rgba(216, 189, 122, .3); border-radius: 6px; }
+
+#sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(3, 14, 7, .62);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .4s ease, visibility .4s ease;
+    z-index: 98;
+}
+.open-sidebar #sidebar-overlay { opacity: 1; visibility: visible; }
+
+#sidebar-area .side-menu-content {
+    width: 100%;
+    padding: 46px 44px 56px;
+}
+@media (max-width: 575px) {
+    #sidebar-area .side-menu-content { padding: 40px 26px 48px; }
+}
+
+/* Close button */
+#sidebar-area .sidebar-trigger.close {
+    right: 30px;
+    top: 30px;
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, .22);
+    background: rgba(255, 255, 255, .04);
+    transition: background .3s ease, border-color .3s ease, transform .3s ease;
+    z-index: 3;
+}
+#sidebar-area .sidebar-trigger.close:hover {
+    background: var(--har-gold-soft);
+    border-color: var(--har-gold-soft);
+    transform: rotate(90deg);
+}
+#sidebar-area .sidebar-trigger.close svg { width: 13px; height: auto; }
+#sidebar-area .sidebar-trigger.close rect { fill: #fff; }
+#sidebar-area .sidebar-trigger.close:hover rect { fill: #04180a; }
+
+/* Logo */
+#sidebar-area .side-menu-logo,
+.mobile-side-menu .side-menu-head { max-width: none; }
+#sidebar-area .side-menu-logo img,
+.mobile-side-menu .side-menu-head img {
+    width: 196px !important;
+    max-width: 196px !important;
+    height: auto;
+    display: block;
+}
+#sidebar-area .side-menu-logo .light-img { display: none !important; }
+#sidebar-area .side-menu-logo .dark-img { display: block !important; }
+
+/* Intro line */
+#sidebar-area .side-menu-about,
+#sidebar-area .side-menu-content .side-menu-about {
+    margin: 36px 0 34px;
+    padding-bottom: 34px;
+    border-bottom: 1px solid rgba(255, 255, 255, .10);
+}
+#sidebar-area .side-menu-about .title {
+    color: rgba(255, 255, 255, .80);
+    font-family: var(--tl-ff-body);
+    font-size: 15.5px;
+    font-weight: 400;
+    line-height: 1.75;
+    margin: 0;
+}
+
+/* Section label used across the panel */
+.har-side-label {
+    display: block;
+    font-family: var(--tl-ff-body);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--har-gold-soft);
+    margin-bottom: 18px;
+}
+
+/* Navigation */
+.har-side-nav { margin-bottom: 36px; }
+.har-side-nav ul { list-style: none; margin: 0; padding: 0; }
+.har-side-nav li { border-bottom: 1px solid rgba(255, 255, 255, .09); }
+.har-side-nav li:first-child { border-top: 1px solid rgba(255, 255, 255, .09); }
+.har-side-nav a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 15px 4px 15px 0;
+    font-family: var(--tl-ff-heading);
+    font-size: 21px;
+    line-height: 1.2;
+    color: rgba(255, 255, 255, .92);
+    text-decoration: none;
+    transition: color .3s ease, padding-left .3s ease;
+}
+.har-side-nav a .num {
+    font-family: var(--tl-ff-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    color: rgba(255, 255, 255, .34);
+    transition: color .3s ease;
+}
+.har-side-nav a:hover,
+.har-side-nav a:focus-visible { color: var(--har-gold-soft); padding-left: 10px; }
+.har-side-nav a:hover .num { color: var(--har-gold-soft); }
+
+.har-side-nav a.is-current,
+.mobile-side-menu .har-mobile-nav-list a.is-current { color: var(--har-gold-soft); }
+.har-side-nav a.is-current .num,
+.mobile-side-menu .har-mobile-nav-list a.is-current .num { color: var(--har-gold-soft); }
+
+.side-menu-gallary-block { margin-bottom: 34px; }
+
+/* Gallery grid — uniform squares, no more ragged rows */
+#sidebar-area .side-menu-gallary,
+.har-side-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 0 0 36px;
+}
+#sidebar-area .side-menu-gallary-item,
+.har-side-gallery-item {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    border: 1px solid rgba(255, 255, 255, .10);
+}
+#sidebar-area .side-menu-gallary-item a,
+.har-side-gallery-item a { display: block; width: 100%; height: 100%; }
+#sidebar-area .side-menu-gallary-item img,
+.har-side-gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .5s ease, filter .4s ease;
+    filter: saturate(.85);
+}
+#sidebar-area .side-menu-gallary-item:hover img,
+.har-side-gallery-item:hover img { transform: scale(1.09); filter: saturate(1); }
+
+/* Contact details */
+.har-side-contact { margin-bottom: 32px; }
+.har-side-contact ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+.har-side-contact li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin: 0 !important;
+}
+.har-side-contact li i {
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--har-gold-soft);
+    background: rgba(216, 189, 122, .12);
+    border: 1px solid rgba(216, 189, 122, .22);
+}
+.har-side-contact li > div { padding-top: 2px; min-width: 0; }
+.har-side-contact .lbl {
+    display: block;
+    font-size: 10.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, .42);
+    margin-bottom: 3px;
+}
+.har-side-contact a,
+.har-side-contact span.val {
+    display: block;
+    font-family: var(--tl-ff-body);
+    font-size: 15px;
+    color: rgba(255, 255, 255, .88);
+    text-decoration: none;
+    word-break: break-word;
+    transition: color .3s ease;
+}
+.har-side-contact a:hover { color: var(--har-gold-soft); }
+.har-side-contact .attn {
+    display: block;
+    margin-top: 2px;
+    font-family: var(--tl-ff-body);
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, .48);
+}
+
+/* Panel CTA */
+.har-side-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 16px 24px;
+    border-radius: 999px;
+    background: var(--har-gold-soft);
+    color: #04180a;
+    font-family: var(--tl-ff-body);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-decoration: none;
+    transition: background .3s ease, transform .3s ease;
+}
+.har-side-cta:hover { background: #fff; color: #04180a; transform: translateY(-2px); }
+
+/* Social row (re-enabled — har-premium.css had hidden it) */
+#sidebar-area .side-menu-social,
+.mobile-side-menu .side-menu-social {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 32px 0 0;
+    padding: 28px 0 0;
+    border-top: 1px solid rgba(255, 255, 255, .10);
+    list-style: none;
+}
+#sidebar-area .side-menu-social li,
+.mobile-side-menu .side-menu-social li { margin: 0 !important; display: inline-flex; }
+#sidebar-area .side-menu-social li a,
+.mobile-side-menu .side-menu-social li a {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 14px;
+    color: rgba(255, 255, 255, .80) !important;
+    border: 1px solid rgba(255, 255, 255, .18);
+    background: rgba(255, 255, 255, .04);
+    transition: background .3s ease, color .3s ease, border-color .3s ease, transform .3s ease;
+}
+#sidebar-area .side-menu-social li a:hover,
+.mobile-side-menu .side-menu-social li a:hover {
+    background: var(--har-gold-soft);
+    border-color: var(--har-gold-soft);
+    color: #04180a !important;
+    transform: translateY(-3px);
+}
+
+/* ---- Mobile off-canvas: same brand panel ---- */
+.mobile-side-menu {
+    background: var(--har-panel) !important;
+    border-left: 1px solid rgba(216, 189, 122, .20);
+    box-shadow: -24px 0 60px rgba(0, 0, 0, .45);
+    width: min(400px, 100vw);
+    padding: 0 !important;
+    overflow-y: auto;
+}
+.mobile-side-menu .side-menu-content { padding: 34px 28px 46px; }
+@media (max-width: 380px) {
+    .mobile-side-menu .side-menu-content { padding: 30px 20px 40px; }
+}
+.mobile-side-menu .side-menu-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 30px;
+}
+.mobile-side-menu .side-menu-head img { width: 168px !important; max-width: 168px !important; }
+.mobile-side-menu .mobile-side-menu-close {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, .22);
+    background: rgba(255, 255, 255, .04);
+    color: #fff;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .3s ease, color .3s ease, transform .3s ease;
+}
+.mobile-side-menu .mobile-side-menu-close:hover {
+    background: var(--har-gold-soft);
+    color: #04180a;
+    transform: rotate(90deg);
+}
+.mobile-side-menu .har-mobile-nav-list {
+    border-top: 1px solid rgba(255, 255, 255, .09);
+    margin-bottom: 30px;
+}
+.mobile-side-menu .har-mobile-nav-list li { border-bottom: 1px solid rgba(255, 255, 255, .09); }
+.mobile-side-menu .har-mobile-nav-list a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--tl-ff-heading);
+    font-weight: 400;
+    font-size: 19px;
+    color: rgba(255, 255, 255, .92);
+    padding: 15px 2px;
+}
+.mobile-side-menu .har-mobile-nav-list a .num {
+    font-family: var(--tl-ff-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    color: rgba(255, 255, 255, .34);
+}
+.mobile-side-menu .har-mobile-nav-list a:hover,
+.mobile-side-menu .har-mobile-nav-list a:focus-visible {
+    color: var(--har-gold-soft);
+    padding-left: 8px;
+}
+.mobile-side-menu .har-mobile-nav-list a:hover .num { color: var(--har-gold-soft); }
+.mobile-side-menu-overlay {
+    background: rgba(3, 14, 7, .62);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+/* =========================================================================
+   3. OPERATING LANDSCAPE — mobile / tablet horizontal swipe track
+   Desktop (>=992px) keeps the pinned scroll-driven track from
+   har-interactions.js. Below that, the cards become a real horizontal
+   scroller with snap points, driven by the finger, not by page scroll.
+   ========================================================================= */
+@media (max-width: 991.98px) {
+    .project-section .project-carousel {
+        overflow-x: auto !important;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        scroll-padding-left: 22px;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(0, 60, 6, .35) rgba(20, 32, 24, .08);
+        padding-bottom: 18px;
+        /* let cards bleed to the screen edge, then pad inside the track */
+        margin-left: calc(var(--har-op-bleed, 0px) * -1);
+        margin-right: calc(var(--har-op-bleed, 0px) * -1);
+    }
+    .project-section .project-carousel::-webkit-scrollbar { height: 4px; }
+    .project-section .project-carousel::-webkit-scrollbar-track {
+        background: rgba(20, 32, 24, .08);
+        border-radius: 4px;
+    }
+    .project-section .project-carousel::-webkit-scrollbar-thumb {
+        background: rgba(0, 60, 6, .38);
+        border-radius: 4px;
+    }
+
+    .project-section .project-carousel .swiper-wrapper {
+        display: flex !important;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        gap: 18px;
+        transform: none !important;
+        width: max-content;
+        padding: 4px var(--har-op-bleed, 0px) 0;
+    }
+    .project-section .project-carousel .swiper-wrapper > div:nth-child(2n+1) { margin-top: 0; }
+
+    .project-section .project-carousel .swiper-slide {
+        flex: 0 0 72vw;
+        width: 72vw;
+        max-width: 380px;
+        height: auto;
+        scroll-snap-align: center;
+        margin: 0 !important;
+    }
+    .project-section .project-item { height: 100%; display: flex; flex-direction: column; }
+    .project-section .project-item .project-img {
+        height: 58vw;
+        max-height: 330px;
+        border-radius: 22px;
+        overflow: hidden;
+    }
+    .project-section .project-item .project-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .project-section .project-item .project-content {
+        margin-top: 18px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    .project-section .project-item .project-content .title { font-size: 21px; margin-bottom: 4px; }
+    .project-section .project-item .project-content span { white-space: normal; font-size: 12.5px; }
+
+    /* swipe affordance */
+    .har-op-swipe-hint {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 14px;
+        font-family: var(--tl-ff-body);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+        color: #8b8f88;
+    }
+    .har-op-swipe-hint svg { width: 28px; height: 8px; flex: 0 0 28px; }
+    .har-op-swipe-hint svg path { stroke: currentColor; }
+}
+@media (min-width: 992px) {
+    .har-op-swipe-hint { display: none; }
+}
+@media (max-width: 575px) {
+    .project-section .project-carousel .swiper-slide { flex-basis: 80vw; width: 80vw; }
+    .project-section .project-item .project-img { height: 64vw; }
+}
+
+/* =========================================================================
+   4. MAPS — kill the letterbox dead space
+   The artwork is a fixed-ratio SVG; the panels used fixed heights, so
+   object-fit:contain left wide empty bands inside the frame. Matching the
+   panel ratio to the artwork ratio removes that space entirely.
+     India  viewBox 642 x 698  -> 321/349
+     Global viewBox 784 x 459  -> 784/459
+   ========================================================================= */
+.har-india-map {
+    height: auto !important;
+    min-height: 0;
+    aspect-ratio: 321 / 349;
+    padding: 20px;
+    border-radius: 26px;
+}
+.har-india-map img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.har-world-map {
+    min-height: 0 !important;
+    height: auto;
+    aspect-ratio: 784 / 459;
+    padding: 18px;
+    border-radius: 26px;
+    justify-content: center;
+}
+.har-world-map img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Rebalance the rows now that the panels are shorter */
+.har-map-row { margin-top: 56px; align-items: center; }
+.har-global-row { margin-top: 56px; align-items: center; }
+.har-location-panel { padding-left: 46px; }
+.har-location-item { padding: 20px 0; }
+.har-location-item h4 { font-size: 22px; }
+
+@media (max-width: 1399px) {
+    .har-location-panel, .har-export-list { padding-left: 32px; }
+}
+@media (max-width: 991px) {
+    .har-india-map { max-width: 460px; margin-inline: auto; }
+    .har-world-map { max-width: 100%; }
+    .har-map-row, .har-global-row { margin-top: 40px; }
+    .har-location-panel, .har-export-list { padding-left: 0; margin-top: 34px; }
+}
+@media (max-width: 767px) {
+    .har-india-map { padding: 14px; max-width: 340px; }
+    .har-world-map { padding: 12px; }
+}
+
+/* Contact-page map embed follows the same ratio instead of a fixed height */
+.har-map-embed { height: auto; }
+.har-map-embed .har-india-map {
+    aspect-ratio: 321 / 349;
+    height: auto;
+    padding: 16px;
+    max-width: 100%;
+}
+
+/* =========================================================================
+   5. FIELD GALLERY — every tile identical
+   The template sized every 2nd and 3rd tile differently, which is what made
+   the strip look ragged. One size, one radius, everywhere.
+   ========================================================================= */
+.gallary-section { padding: 10px 0 0; }
+.gallary-wrap .gallery-scroll-wrap,
+.gallary-wrap .gallery-scroll-wrap.align-items-start {
+    align-items: center !important;
+    gap: 20px;
+}
+.gallery-scroll-wrap .gallary-scroll-item,
+.gallery-scroll-wrap .gallary-scroll-item:nth-child(3n+1),
+.gallery-scroll-wrap .gallary-scroll-item:nth-child(3n+2),
+.gallery-scroll-wrap .gallary-scroll-item:nth-child(3n+3) {
+    flex: 0 0 auto;
+    width: 400px;
+    height: 265px;
+    border-radius: 18px;
+    overflow: hidden;
+    margin: 0;
+}
+.gallery-scroll-wrap .gallary-scroll-item a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.gallery-scroll-wrap .gallary-scroll-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 18px;
+    display: block;
+}
+.gallary-wrap.wrap-1 { margin-bottom: 20px; }
+
+@media (max-width: 1399px) {
+    .gallery-scroll-wrap .gallary-scroll-item,
+    .gallery-scroll-wrap .gallary-scroll-item:nth-child(3n+1),
+    .gallery-scroll-wrap .gallary-scroll-item:nth-child(3n+2),
+    .gallery-scroll-wrap .gallary-scroll-item:nth-child(3n+3) { width: 340px; height: 226px; }
+}
+@media (max-width: 991px) {
+    .gallary-wrap .gallery-scroll-wrap,
+    .gallary-wrap .gallery-scroll-wrap.align-items-start { gap: 14px; }
+    .gallery-scroll-wrap .gallary-scroll-item,
+    .gallery-scroll-wrap .gallary-scroll-item:nth-child(3n+1),
+    .gallery-scroll-wrap .gallary-scroll-item:nth-child(3n+2),
+    .gallery-scroll-wrap .gallary-scroll-item:nth-child(3n+3) { width: 260px; height: 173px; border-radius: 14px; }
+    .gallery-scroll-wrap .gallary-scroll-item img { border-radius: 14px; }
+    .gallary-wrap.wrap-1 { margin-bottom: 14px; }
+}
+@media (max-width: 575px) {
+    .gallary-wrap .gallery-scroll-wrap,
+    .gallary-wrap .gallery-scroll-wrap.align-items-start { gap: 10px; }
+    .gallery-scroll-wrap .gallary-scroll-item,
+    .gallery-scroll-wrap .gallary-scroll-item:nth-child(3n+1),
+    .gallery-scroll-wrap .gallary-scroll-item:nth-child(3n+2),
+    .gallery-scroll-wrap .gallary-scroll-item:nth-child(3n+3) { width: 190px; height: 126px; border-radius: 12px; }
+    .gallery-scroll-wrap .gallary-scroll-item img { border-radius: 12px; }
+    .gallary-wrap.wrap-1 { margin-bottom: 10px; }
+}
+
+/* =========================================================================
+   6. CONTACT
+   ========================================================================= */
+/* ---- Info cards ---- */
+.har-contact-info-list { gap: 14px; }
+.har-contact-info-item {
+    align-items: center;
+    padding: 20px 22px;
+    border-radius: 18px;
+    transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+}
+.har-contact-info-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 44px rgba(18, 31, 21, .08);
+    border-color: rgba(0, 60, 6, .18);
+}
+.har-contact-info-item h4 {
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #8b8f88;
+    margin-bottom: 5px;
+    font-family: var(--tl-ff-body);
+    font-weight: 600 !important;
+}
+.har-contact-info-item p,
+.har-contact-info-item a {
+    font-size: 16px;
+    color: var(--har-ink, #142018);
+    line-height: 1.5;
+    word-break: break-word;
+}
+.har-contact-info-item a { text-decoration: none; transition: color .25s ease; }
+.har-contact-info-item a:hover { color: var(--har-green, #003c06); }
+.har-contact-info-item .attn {
+    display: block;
+    margin-top: 2px;
+    font-size: 13px;
+    color: #8b8f88;
+}
+
+/* ---- Form card ---- */
+.har-form-card {
+    border-radius: 26px;
+    padding: 42px 42px 44px;
+    position: relative;
+}
+@media (max-width: 575px) { .har-form-card { padding: 30px 22px 34px; } }
+.har-form-card h3 { font-size: 27px; margin-bottom: 8px; }
+.har-form-card > p { margin-bottom: 28px; font-size: 15px; }
+.har-form-card > p .req { color: #b23b2f; }
+.har-contact-info-item .icon { font-size: 16px; }
+
+.har-form-row { gap: 18px 20px; }
+.har-field { margin-bottom: 18px; position: relative; }
+.har-field label {
+    font-size: 11px;
+    letter-spacing: .12em;
+    color: #8b8f88;
+    margin-bottom: 7px;
+}
+.har-field label .req { color: #b23b2f; margin-left: 2px; }
+.har-field input,
+.har-field select,
+.har-field textarea {
+    border: 1px solid #e3e1d8;
+    border-radius: 12px;
+    background: #fbfaf7;
+    padding: 13px 15px;
+    font-size: 15px;
+    line-height: 1.45;
+    transition: border-color .25s ease, background .25s ease, box-shadow .25s ease;
+    -webkit-appearance: none;
+    appearance: none;
+}
+.har-field textarea { min-height: 130px; border-radius: 14px; }
+.har-field input::placeholder,
+.har-field textarea::placeholder { color: #a9aca3; }
+.har-field input:hover,
+.har-field select:hover,
+.har-field textarea:hover { border-color: #cfccc0; }
+.har-field input:focus,
+.har-field select:focus,
+.har-field textarea:focus {
+    outline: none;
+    background: #fff;
+    border-color: var(--har-green, #003c06);
+    box-shadow: 0 0 0 3px rgba(0, 60, 6, .10);
+}
+/* custom select chevron */
+.har-field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' stroke='%23556' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    padding-right: 38px;
+    cursor: pointer;
+}
+
+/* validation */
+.har-field.is-invalid input,
+.har-field.is-invalid select,
+.har-field.is-invalid textarea {
+    border-color: #d06a5e;
+    background: #fdf6f5;
+}
+.har-field .har-field-error {
+    display: none;
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: #b23b2f;
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: 500;
+}
+.har-field.is-invalid .har-field-error { display: block; }
+
+/* honeypot */
+.har-hp {
+    position: absolute !important;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* submit */
+.har-form-card .tl-primary-btn {
+    margin-top: 10px;
+    border-radius: 999px;
+    background: var(--har-green, #003c06);
+    color: #fff;
+    border: 1px solid var(--har-green, #003c06);
+    padding: 15px 26px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: background .3s ease, color .3s ease, transform .3s ease, opacity .3s ease;
+}
+.har-form-card .tl-primary-btn:hover { background: #062c0e; transform: translateY(-2px); }
+.har-form-card .tl-primary-btn[disabled],
+.har-form-card .tl-primary-btn.is-sending { opacity: .62; cursor: progress; transform: none; }
+.har-form-card .tl-primary-btn .icon { display: inline-flex; }
+.har-form-card .tl-primary-btn.is-sending .icon i {
+    animation: harSpin .8s linear infinite;
+}
+@keyframes harSpin { to { transform: rotate(360deg); } }
+
+/* status message */
+#form-messages {
+    margin-top: 18px;
+    font-size: 14px;
+    line-height: 1.6;
+    display: none;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+}
+#form-messages.is-visible { display: block; }
+#form-messages.alert-success {
+    color: #14481d;
+    background: #eaf3ea;
+    border-color: rgba(0, 60, 6, .18);
+}
+#form-messages.alert-danger {
+    color: #8f2d23;
+    background: #fdf1ef;
+    border-color: rgba(178, 59, 47, .22);
+}
+#form-messages a { color: inherit; text-decoration: underline; }
+
+/* ---- Home-page enquiry strip ---- */
+.har-newsletter-form { position: relative; }
+.newsletter-form { position: relative; }
+.newsletter-form.is-invalid { border-bottom-color: #b23b2f; }
+#newsletter-message {
+    margin-top: 14px;
+    font-size: 14px;
+    text-align: center;
+    min-height: 20px;
+}
+#newsletter-message.alert-success { color: var(--har-green, #003c06); }
+#newsletter-message.alert-danger { color: #b23b2f; }
+.newsletter-form button.is-sending i { animation: harSpin .8s linear infinite; }
+
+/* Quick-contact row under the home enquiry heading */
+.har-quick-contact {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin: 26px 0 6px;
+}
+.har-quick-contact a,
+.har-quick-contact span {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 20px;
+    border-radius: 999px;
+    border: 1px solid #ddd9cd;
+    background: #fff;
+    font-family: var(--tl-ff-body);
+    font-size: 14.5px;
+    color: var(--har-ink, #142018);
+    text-decoration: none;
+    transition: border-color .3s ease, transform .3s ease, box-shadow .3s ease;
+}
+.har-quick-contact a i,
+.har-quick-contact span i { color: var(--har-green, #003c06); font-size: 14px; }
+.har-quick-contact a:hover {
+    border-color: rgba(0, 60, 6, .35);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(18, 31, 21, .07);
+}
+@media (max-width: 575px) {
+    .har-quick-contact a,
+    .har-quick-contact span { width: 100%; justify-content: center; font-size: 13.5px; }
+}
+
+/* Footer watermark: the template's giant plain-text "HAR" is replaced with
+   the actual logo mark, faded the same way the text used to be. */
+.footer-text { display: flex; justify-content: center; pointer-events: none; }
+.footer-text span { display: none; } /* the old gradient-text span, unused now */
+.footer-text img {
+    height: 300px;
+    width: auto;
+    opacity: .05;
+    display: block;
+}
+@media (max-width: 1399px) { .footer-text img { height: 250px; } }
+@media (max-width: 1199px) { .footer-text img { height: 210px; } }
+@media (max-width: 992px)  { .footer-text img { height: 160px; } }
+@media (max-width: 767px)  { .footer-text img { height: 90px; opacity: .07; } }
+
+/* =========================================================================
+   8. VALUE-CHAIN / PROCESS CARDS — one shared baseline
+   The base template (main.css) staggers cards 2-4 progressively lower via
+   nth-child margin-top, which reads as misaligned rather than intentional.
+   Every card in the row now starts level.
+   ========================================================================= */
+@media (min-width: 1200px) {
+    .process-wrap > div:nth-child(2),
+    .process-wrap > div:nth-child(3),
+    .process-wrap > div:nth-child(4),
+    .process-wrap > div:nth-child(5) {
+        margin-top: 0;
+    }
+}
+
+/* =========================================================================
+   7. FOOTER contact details
+   ========================================================================= */
+.footer-address .attn {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, .68);
+}
+.footer-address .number {
+    font-size: 25px;
+    display: block;
+    margin-bottom: 8px;
+    color: #fff !important;
+    text-decoration: none;
+    transition: color .3s ease;
+}
+.footer-address .number:hover { color: var(--har-gold-soft) !important; }
+.footer-address .mail {
+    display: block;
+    margin-bottom: 6px;
+    word-break: break-word;
+}
+.footer-widget p a {
+    color: rgba(255, 255, 255, .88);
+    text-decoration: none;
+    transition: color .3s ease;
+    word-break: break-word;
+}
+.footer-widget p a:hover { color: var(--har-gold-soft); }
+
+.har-footer-address {
+    display: block;
+    color: rgba(255, 255, 255, .62);
+    font-size: 14.5px;
+    line-height: 1.65;
+    margin-top: 10px;
+}
+.footer-address .social-list { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px; }
+.footer-address .social-list li { margin: 0 !important; }
+.footer-address .social-list li a {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, .20);
+    font-size: 13px;
+    transition: background .3s ease, color .3s ease, border-color .3s ease, transform .3s ease;
+}
+.footer-address .social-list li a:hover {
+    background: var(--har-gold-soft);
+    border-color: var(--har-gold-soft);
+    color: #04180a !important;
+    transform: translateY(-3px);
+}
+@media (max-width: 767px) {
+    .footer-address .number { font-size: 22px; }
+}

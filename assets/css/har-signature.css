@@ -1,0 +1,310 @@
+/* =========================================================================
+   HAR INFRA + HAR TRADING COMPANY — "Signature" premium layer
+   Loaded LAST. Purely additive: does not remove or restructure any existing
+   template markup, grid or section order. Covers:
+     1. Extra global premium polish (scrollbar, focus, kickers, dividers)
+     2. Stylish India + Global export map redesign (SVG panels + pins)
+     3. Inner page header (About / Services / Contact)
+     4. Reusable "signature" components used by the new pages:
+        value cards, service-detail rows, timeline, contact form & info
+   ========================================================================= */
+
+/* ---------- 1. Global polish ---------- */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #f1efe8; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg,#0c2413,#003c06); border-radius: 10px; }
+a, button { outline-offset: 3px; }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--har-gold, #b59a61);
+    outline-offset: 3px;
+}
+
+.har-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--tl-ff-heading);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--har-gold, #b59a61);
+    margin-bottom: 18px;
+}
+.har-kicker:before {
+    content: "";
+    width: 34px;
+    height: 1px;
+    background: var(--har-gold, #b59a61);
+    display: inline-block;
+}
+
+/* ---------- 2. Signature maps ---------- */
+.har-india-map,
+.har-world-map {
+    background: #050e08;
+    border: 1px solid rgba(216,189,122,.22);
+    box-shadow: 0 30px 70px rgba(3,15,7,.35), inset 0 0 0 1px rgba(255,255,255,.02);
+    position: relative;
+}
+.har-india-map:before,
+.har-world-map:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 90px rgba(216,189,122,.06);
+    pointer-events: none;
+}
+.har-india-map img,
+.har-world-map img { filter: none; }
+
+/* pulse ring on both maps */
+.in-pin-pulse, .pin-pulse {
+    fill: none;
+    stroke: #d8bd7a;
+    stroke-width: 1.1;
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: harMapPulse 2.6s ease-out infinite;
+    animation-delay: var(--d, 0s);
+}
+.in-pin-dot { fill: #ffe9b8; stroke: #06280d; stroke-width: .4; }
+.pin-dot { fill: #ffe9b8; stroke: #06280d; stroke-width: .4; }
+.pin-dot-india, .in-pin-dot { fill: #ffffff; }
+.in-pin-num {
+    fill: rgba(255,255,255,.86);
+    font-family: var(--tl-ff-heading), serif;
+    font-size: 3.2px;
+    letter-spacing: .02em;
+    text-anchor: middle;
+}
+.har-routes path { animation: harDashFlow 26s linear infinite; }
+.hi { transition: opacity .3s ease; }
+
+@keyframes harMapPulse {
+    0%   { transform: scale(.35); opacity: .95; }
+    70%  { transform: scale(2.6); opacity: 0; }
+    100% { transform: scale(2.6); opacity: 0; }
+}
+@keyframes harDashFlow {
+    to { stroke-dashoffset: -300; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .in-pin-pulse, .pin-pulse, .har-routes path { animation: none; }
+}
+
+/* Location list numbers glow to tie back to the pins */
+.har-location-item > span,
+.har-export-group > span { position: relative; }
+
+/* ---------- 3. Inner page header (About / Services / Contact) ---------- */
+.har-page-header {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    background: #06170b;
+    padding: 210px 0 120px;
+    text-align: center;
+}
+.har-page-header .bg-img {
+    position: absolute; inset: 0;
+    background-position: center; background-size: cover; background-repeat: no-repeat;
+    z-index: -2;
+}
+.har-page-header .overlay {
+    position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, rgba(3,16,7,.88), rgba(3,16,7,.72) 55%, rgba(3,16,7,.94));
+}
+.har-page-header .har-kicker { justify-content: center; color: #d8bd7a; }
+.har-page-header .har-kicker:before, .har-page-header .har-kicker:after {
+    background: rgba(255,255,255,.4);
+}
+.har-page-header .har-kicker:after {
+    content: ""; width: 34px; height: 1px; background: rgba(255,255,255,.4); display: inline-block;
+}
+.har-page-header h1 {
+    color: #fff;
+    font-size: 66px;
+    letter-spacing: -.02em;
+    margin-bottom: 18px;
+}
+.har-page-header p {
+    color: rgba(255,255,255,.75);
+    max-width: 640px;
+    margin: 0 auto;
+    font-size: 17px;
+    line-height: 1.7;
+}
+.har-page-header .har-breadcrumb {
+    margin-top: 26px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    letter-spacing: .04em;
+    color: rgba(255,255,255,.55);
+}
+.har-page-header .har-breadcrumb a { color: rgba(255,255,255,.8); }
+.har-page-header .har-breadcrumb a:hover { color: #d8bd7a; }
+@media (max-width: 767px) {
+    .har-page-header { padding: 150px 0 80px; }
+    .har-page-header h1 { font-size: 38px; }
+}
+
+/* ---------- 4a. Value / pillar cards (About) ---------- */
+.har-value-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 26px;
+}
+@media (max-width: 991px) { .har-value-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 575px) { .har-value-grid { grid-template-columns: 1fr; } }
+.har-value-card {
+    background: #fff;
+    border: 1px solid #e8e6df;
+    border-radius: 26px;
+    padding: 40px 30px;
+    box-shadow: 0 18px 46px rgba(18,31,21,.045);
+    transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+}
+.har-value-card:hover { transform: translateY(-8px); box-shadow: 0 30px 70px rgba(12,43,19,.10); border-color: rgba(0,60,6,.18); }
+.har-value-card .icon {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--har-green-soft, #e8eee8);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; color: var(--har-green, #003c06);
+    margin-bottom: 22px;
+}
+.har-value-card h4 { font-size: 21px; margin-bottom: 10px; }
+.har-value-card p { margin: 0; color: #666b67; line-height: 1.7; font-size: 15px; }
+
+/* ---------- 4b. Timeline / story strip (About) ---------- */
+.har-story-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border-top: 1px solid #e3e3dd;
+    border-bottom: 1px solid #e3e3dd;
+}
+.har-story-strip .har-story-item {
+    flex: 1 1 220px;
+    padding: 34px 30px;
+    border-left: 1px solid #e3e3dd;
+}
+.har-story-strip .har-story-item:first-child { border-left: none; }
+.har-story-strip .har-story-item h3 {
+    font-size: 44px;
+    color: var(--har-green, #003c06);
+    letter-spacing: -.02em;
+    margin-bottom: 6px;
+}
+.har-story-strip .har-story-item p { margin: 0; color: #6f746f; font-size: 14px; }
+@media (max-width: 767px) {
+    .har-story-strip .har-story-item { flex: 1 1 50%; border-left: none; border-top: 1px solid #e3e3dd; }
+}
+
+/* ---------- 4c. Service detail rows (Services page) ---------- */
+.har-service-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    padding: 70px 0;
+    border-bottom: 1px solid #e6e4dd;
+}
+.har-service-row:last-of-type { border-bottom: none; }
+.har-service-row.reverse .har-service-media { order: 2; }
+.har-service-media { border-radius: 28px; overflow: hidden; box-shadow: 0 24px 60px rgba(20,30,20,.10); }
+.har-service-media img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 340px; }
+.har-service-index {
+    font-family: var(--tl-ff-heading);
+    color: rgba(0,60,6,.14);
+    font-size: 60px;
+    line-height: 1;
+    margin-bottom: 10px;
+}
+.har-service-copy h3 { font-size: 34px; margin-bottom: 16px; letter-spacing: -.02em; }
+.har-service-copy > p { color: #666b67; line-height: 1.75; margin-bottom: 26px; }
+.har-service-list { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+.har-service-list li {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 15px; color: var(--har-ink, #142018);
+}
+.har-service-list li i { color: var(--har-gold, #b59a61); margin-top: 3px; }
+@media (max-width: 991px) {
+    .har-service-row { grid-template-columns: 1fr; gap: 30px; padding: 46px 0; }
+    .har-service-row.reverse .har-service-media { order: 0; }
+    .har-service-media img { min-height: 260px; }
+}
+
+/* ---------- 4d. Contact page ---------- */
+.har-contact-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 60px;
+    align-items: start;
+}
+@media (max-width: 991px) { .har-contact-grid { grid-template-columns: 1fr; gap: 40px; } }
+
+.har-contact-info-list { display: grid; gap: 18px; margin-bottom: 34px; }
+.har-contact-info-item {
+    display: flex; gap: 18px; align-items: flex-start;
+    background: #fff; border: 1px solid #e8e6df; border-radius: 20px; padding: 22px 24px;
+    box-shadow: 0 14px 36px rgba(18,31,21,.04);
+}
+.har-contact-info-item .icon {
+    width: 46px; height: 46px; flex: 0 0 46px; border-radius: 50%;
+    background: var(--har-green-soft, #e8eee8); color: var(--har-green, #003c06);
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+.har-contact-info-item h4 { font-size: 16px; margin-bottom: 4px; }
+.har-contact-info-item p, .har-contact-info-item a { margin: 0; color: #666b67; font-size: 14.5px; }
+.har-contact-info-item a:hover { color: var(--har-green, #003c06); }
+
+.har-form-card {
+    background: #fff;
+    border: 1px solid #e8e6df;
+    border-radius: 28px;
+    padding: 46px;
+    box-shadow: 0 24px 60px rgba(18,31,21,.06);
+}
+@media (max-width: 575px) { .har-form-card { padding: 30px 22px; } }
+.har-form-card h3 { font-size: 28px; margin-bottom: 10px; }
+.har-form-card > p { color: #6f746f; margin-bottom: 30px; }
+.har-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 575px) { .har-form-row { grid-template-columns: 1fr; } }
+.har-field { margin-bottom: 20px; }
+.har-field label {
+    display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+    color: #8b8f88; margin-bottom: 8px; font-weight: 600;
+}
+.har-field input, .har-field select, .har-field textarea {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #dedcd3;
+    background: transparent;
+    padding: 12px 2px;
+    font-family: var(--tl-ff-body);
+    font-size: 15.5px;
+    color: var(--har-ink, #142018);
+    transition: border-color .3s ease;
+}
+.har-field textarea { resize: vertical; min-height: 110px; }
+.har-field input:focus, .har-field select:focus, .har-field textarea:focus {
+    border-bottom-color: var(--har-green, #003c06);
+}
+.har-form-card .tl-primary-btn { border: 1px solid rgba(159,159,164,.64); margin-top: 6px; }
+#form-messages { margin-top: 18px; font-size: 14px; }
+#form-messages.alert-success { color: var(--har-green, #003c06); }
+#form-messages.alert-danger { color: #b23b2f; }
+
+.har-map-embed {
+    border-radius: 26px;
+    overflow: hidden;
+    height: 340px;
+    margin-top: 34px;
+    box-shadow: 0 24px 55px rgba(19,32,21,.10);
+}
+.har-map-embed .har-india-map,
+.har-map-embed .har-world-map { border-radius: 26px; height: 100%; padding: 0; min-height: 0; }

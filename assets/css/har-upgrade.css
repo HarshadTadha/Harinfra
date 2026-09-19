@@ -1,0 +1,243 @@
+/* ==========================================================================
+   HAR INFRA + HAR TRADING — Premium upgrade layer
+   Loaded AFTER har-premium.css. Isolated so the original template and the
+   existing brand layer stay untouched. Scope is intentionally narrow:
+     1. "Scale" counter section  -> premium restyle + remove dead whitespace
+     2. "Operations" project section -> premium cards + horizontal scroll
+     3. A few low-risk global rhythm / responsive corrections
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. SCALE / COUNTER SECTION  (#scale)
+   The base template reserved 425px of bottom padding for a decorative image
+   that is no longer used, leaving a large empty gap. Rebalance the section
+   and give the stats a more considered, premium treatment.
+   -------------------------------------------------------------------------- */
+.counter-section.counter-1 {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    overflow: hidden;
+}
+
+/* Faint brand watermark: keep it, but make it a controlled, tasteful mark */
+.counter-section .counter-text {
+    position: absolute;
+    left: 60px;
+    bottom: 48px;
+    margin: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+.counter-section .counter-text .her-logo-section {
+    width: clamp(220px, 24vw, 360px);
+    height: auto;
+    opacity: .10;
+    filter: grayscale(1);
+}
+
+.counter-section .container-2 { position: relative; z-index: 1; }
+.counter-section .row.gy-5 { --bs-gutter-y: 0; }
+
+/* Each stat becomes a quiet "column" with a hairline rhythm */
+.counter-item {
+    position: relative;
+    padding: 6px 34px 6px 0;
+}
+@media (min-width: 992px) {
+    /* elegant vertical separators between the four stats */
+    .counter-section .col-lg-3 + .col-lg-3 .counter-item::before {
+        content: "";
+        position: absolute;
+        left: -34px;
+        top: 4px;
+        bottom: 4px;
+        width: 1px;
+        background: linear-gradient(180deg, transparent, rgba(0,60,6,.14) 22%, rgba(0,60,6,.14) 78%, transparent);
+    }
+}
+
+/* The number */
+.counter-item .title {
+    font-size: clamp(56px, 5vw, 78px);
+    line-height: .95;
+    letter-spacing: -.03em;
+    color: var(--har-green);
+    font-variant-numeric: tabular-nums;
+    padding-bottom: 22px;
+    margin-bottom: 22px;
+    border-bottom: 0;                 /* replace the flat template rule */
+    position: relative;
+}
+.counter-item .title .icon { color: var(--har-gold); font-weight: 400; }
+
+/* Premium accent rule: light full-width line with a short brand segment */
+.counter-item .title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background:
+        linear-gradient(90deg, var(--har-green) 0 46px, transparent 46px),
+        linear-gradient(90deg, rgba(20,32,24,.12), rgba(20,32,24,.12));
+    background-size: 100% 2px, 100% 1px;
+    background-repeat: no-repeat;
+    background-position: left bottom, left bottom;
+}
+
+.counter-item .sub-title {
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -.01em;
+    color: var(--har-ink);
+    margin-bottom: 10px;
+}
+.counter-item p {
+    font-size: 15px;
+    line-height: 1.55;
+    color: #7a7f79;
+    margin: 0;
+}
+
+@media (max-width: 991px) {
+    .counter-section.counter-1 { padding-top: 90px; padding-bottom: 90px; }
+    .counter-section .row.gy-5 { --bs-gutter-y: 48px; }
+    .counter-item { padding-right: 12px; }
+}
+@media (max-width: 767px) {
+    .counter-section.counter-1 { padding-top: 70px; padding-bottom: 70px; }
+    .counter-section .row.gy-5 { --bs-gutter-y: 40px; }
+    .counter-item .title { padding-bottom: 16px; margin-bottom: 16px; }
+    .counter-item .sub-title { font-size: 18px; }
+}
+
+/* --------------------------------------------------------------------------
+   2. OPERATIONS / PROJECT SECTION  (#operations)
+   The base template reserved 430px of bottom padding for a "house" image that
+   har-premium.css hides -> collapse that gap. Then premium-ise the cards and
+   prepare the track for the horizontal scroll interaction (JS in
+   har-interactions.js). Mobile keeps a normal swipe carousel.
+   -------------------------------------------------------------------------- */
+.project-section {
+    padding-bottom: 130px;
+}
+@media (max-width: 991px) { .project-section { padding-bottom: 90px; } }
+@media (max-width: 767px) { .project-section { padding-bottom: 70px; } }
+
+/* Breathing room between the heading block and the cards */
+.project-section .section-heading-wrap { margin-bottom: 56px; }
+@media (max-width: 767px) { .project-section .section-heading-wrap { margin-bottom: 36px; } }
+
+/* Card refinements (apply at all widths) */
+.project-item .project-img {
+    box-shadow: 0 22px 50px rgba(16, 30, 20, .10);
+}
+.project-item .project-img:before {
+    background: linear-gradient(180deg, rgba(6,20,10,0) 45%, rgba(6,20,10,.55) 100%);
+    opacity: 1;                       /* replace the flat 11% black wash */
+}
+.project-item .project-img ul li a {
+    font-size: 11px;
+    letter-spacing: .12em;
+    padding: 7px 15px;
+    background: rgba(8, 26, 13, .38);
+    border-color: rgba(255,255,255,.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+.project-item .project-content {
+    margin-top: 24px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 18px;
+}
+.project-item .project-content .title {
+    font-size: clamp(24px, 1.9vw, 30px);
+    letter-spacing: -.02em;
+    margin-bottom: 8px;
+}
+.project-item .project-content .title a { transition: color .3s ease; }
+.project-item:hover .project-content .title a { color: var(--har-green); }
+.project-item .project-content span {
+    font-size: 13px;
+    letter-spacing: .04em;
+    white-space: nowrap;
+    color: #7a7f79;
+}
+.project-item:hover .project-img img { transform: scale(1.06); }
+.project-item .project-img img { transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+
+/* ---- Desktop: horizontal scroll track (driven by har-interactions.js) ---- */
+@media (min-width: 992px) {
+    .project-carousel { overflow: hidden; }
+    .project-carousel .swiper-wrapper {
+        display: flex;
+        align-items: stretch;
+        gap: 30px;
+        will-change: transform;
+    }
+    /* neutralise the template's decorative odd-row offset in the track */
+    .project-carousel .swiper-wrapper > div:nth-child(2n+1) { margin-top: 0; }
+    .project-carousel .swiper-slide {
+        flex: 0 0 clamp(340px, 30vw, 460px);
+        width: clamp(340px, 30vw, 460px);
+        height: auto;
+    }
+    .project-item { height: 100%; }
+    .project-item .project-img { height: clamp(400px, 56vh, 560px); }
+
+    /* while the section is pinned, show a subtle grab affordance */
+    .project-section.is-op-pinned .project-carousel { cursor: grab; }
+
+    /* progress + hint injected by JS */
+    .har-op-progress {
+        position: relative;
+        margin-top: 46px;
+        height: 2px;
+        width: 100%;
+        background: rgba(20, 32, 24, .12);
+        border-radius: 2px;
+        overflow: hidden;
+    }
+    .har-op-progress > span {
+        position: absolute;
+        left: 0; top: 0; bottom: 0;
+        width: 0%;
+        background: var(--har-green);
+        border-radius: 2px;
+    }
+    .har-op-hint {
+        margin-top: 16px;
+        font-family: var(--tl-ff-heading);
+        font-size: 12px;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+        color: #8b8f88;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .har-op-hint svg { width: 30px; height: 8px; }
+}
+
+/* --------------------------------------------------------------------------
+   3. Low-risk global rhythm / responsive corrections
+   -------------------------------------------------------------------------- */
+img { max-width: 100%; }
+
+/* Keep comfortable edge spacing on small screens across every container */
+@media (max-width: 575px) {
+    .container, .container-2 { padding-left: 22px; padding-right: 22px; }
+}
+
+/* Tame very large decorative background words so they never cause overflow */
+.project-section .project-text span,
+.counter-1 .counter-text { max-width: 100vw; }
+
+/* Respect reduced-motion: neutralise the horizontal-scroll transform hint */
+@media (prefers-reduced-motion: reduce) {
+    .project-item .project-img img { transition: none; }
+}

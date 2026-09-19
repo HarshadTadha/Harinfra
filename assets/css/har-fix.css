@@ -1,0 +1,212 @@
+/* =========================================================================
+   HAR INFRA + HAR TRADING COMPANY — Fix layer
+   Loaded LAST of all. Addresses three reported issues without touching the
+   page layout/structure:
+     1. Inconsistent bold/regular text (root cause: "Cal Sans" is a single-
+        weight display font, so any font-weight other than 400 forces the
+        browser to fake/synthesize bold, rendering differently per browser —
+        and if the Google Fonts request is ever blocked, it silently falls
+        back to a generic serif that looks nothing like the rest of the
+        page). We normalise every heading-font weight to a real 400 and give
+        it a proper sans-serif fallback stack.
+     2. Low-contrast / hard to read text in a few spots.
+     3. A genuinely broken mobile menu (nav had no way to open on phones/
+        tablets) + missing responsive coverage in a few places.
+   ========================================================================= */
+
+/* ---------- 1. Font-weight & fallback consistency ---------- */
+:root {
+    --tl-ff-heading: 'Cal Sans', 'Poppins', 'Segoe UI', Roboto, Arial, sans-serif;
+    --tl-ff-body: 'Golos Text', 'Segoe UI', Roboto, Arial, sans-serif;
+    --tl-ff-p: 'Golos Text', 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+/* Cal Sans ships as a single static weight (400). Requesting 500/600/700/800
+   on it makes browsers "fake bold" it inconsistently — that is the #1 cause
+   of some headings looking bold and others not. Force a real 400 everywhere
+   the heading font is used, site-wide. */
+h1, h2, h3, h4, h5, h6,
+.section-title,
+.section-heading .section-title,
+.tl-primary-btn,
+.har-kicker,
+.har-page-header h1,
+.video-content .video-title,
+.counter-item .title,
+.process-item .process-content .title,
+.project-item .project-content .title,
+.post-card .post-content .title,
+.service-item .service-top .title,
+.feature-item .title,
+.har-service-copy h3,
+.har-value-card h4,
+.har-story-strip h3,
+.har-form-card h3,
+.har-contact-info-item h4,
+.side-menu-header h3,
+.details-title,
+.element-title {
+    font-weight: 400 !important;
+}
+
+/* Kickers/labels that are meant to look bold now do so on the body font
+   (Golos Text), which has real weight data — so the bold is genuine, not
+   synthesised, and renders identically everywhere. */
+.har-kicker,
+.section-heading .sub-heading {
+    font-family: var(--tl-ff-body);
+    font-weight: 600 !important;
+}
+
+/* ---------- 2. Readability tweaks ---------- */
+body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+p, li, .har-field label { -webkit-font-smoothing: antialiased; }
+
+/* A few greys across the site were a little too light against their
+   background for comfortable body-copy contrast; deepen them slightly. */
+.process-section .process-item .process-content p,
+.counter-item p,
+.har-export-group p,
+.footer-widget p { color: #5b5f5b; }
+.footer-widget p,
+.footer-list li a,
+.footer-address .mail,
+.footer-address .social-list li a { color: rgba(255,255,255,.78); }
+.har-story-strip .har-story-item p { color: #5b5f5b; }
+.har-contact-info-item p { color: #55594f; }
+.har-value-card p,
+.har-service-copy > p { color: #555a53; }
+
+/* Comfortable reading width for longer paragraphs on very wide screens */
+.about-content p,
+.har-service-copy > p,
+.har-form-card > p,
+.section-heading p { max-width: 62ch; }
+
+/* Ensure white text always used on dark/overlaid imagery stays legible */
+.slider-content-wrap .bottom-content .antra-desc p,
+.about-content p { color: rgba(255,255,255,.86); }
+
+/* ---------- 3. Working mobile navigation ---------- */
+.har-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px;
+    z-index: 20;
+}
+.har-hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    margin: 3px 0;
+    transition: transform .3s ease, opacity .3s ease, background-color .3s ease;
+}
+.header.fixed .har-hamburger span,
+.header .primary-header.fixed .har-hamburger span { background: #fff; }
+.har-hamburger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.har-hamburger.is-open span:nth-child(2) { opacity: 0; }
+.har-hamburger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 992px) {
+    .har-hamburger { display: inline-flex; }
+}
+
+/* Hand-built nav list rendered inside the existing off-canvas panel */
+.har-mobile-nav-list {
+    list-style: none;
+    margin: 0 0 30px 0;
+    padding: 0;
+    border-top: 1px solid #e6e4dd;
+}
+.har-mobile-nav-list li { border-bottom: 1px solid #e6e4dd; }
+.har-mobile-nav-list a {
+    display: block;
+    padding: 16px 2px;
+    font-family: var(--tl-ff-body);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--har-ink, #142018);
+    text-decoration: none;
+    transition: color .25s ease, padding-left .25s ease;
+}
+.har-mobile-nav-list a:hover,
+.har-mobile-nav-list a:focus-visible {
+    color: var(--har-green, #003c06);
+    padding-left: 8px;
+}
+
+/* The off-canvas panel itself: make sure it never exceeds the viewport
+   width on very small phones (some Android devices report <320px). */
+@media (max-width: 992px) {
+    .mobile-side-menu { width: min(400px, 100vw); }
+}
+@media (max-width: 380px) {
+    .mobile-side-menu { padding: 32px 18px !important; }
+    .har-mobile-nav-list a { font-size: 16px; padding: 14px 2px; }
+}
+
+/* ---------- 4. Extra responsive coverage ---------- */
+/* Universal safety net: nothing should ever force horizontal scroll */
+html, body { overflow-x: hidden; }
+img, svg, video, canvas { max-width: 100%; height: auto; }
+.container, .container-2, .row { max-width: 100%; }
+
+/* Fluid type for the biggest headings so they scale smoothly between
+   breakpoints instead of jumping at fixed widths (fixes odd tablet/
+   foldable/small-laptop widths that fell between the old breakpoints). */
+.slider-content-wrap .section-heading .section-title {
+    font-size: clamp(34px, 6vw, 88px);
+}
+.har-page-header h1 { font-size: clamp(30px, 5.2vw, 66px); }
+.video-content .video-title { font-size: clamp(32px, 6.2vw, 98px); }
+.section-heading .section-title { font-size: clamp(28px, 4.4vw, 80px); }
+.section-heading .section-title.title-2 { font-size: clamp(26px, 3.6vw, 60px); }
+.har-story-strip .har-story-item h3 { font-size: clamp(30px, 4vw, 44px); }
+.har-service-copy h3 { font-size: clamp(24px, 3vw, 34px); }
+
+@media (max-width: 991px) {
+    .har-page-header { padding: 170px 0 90px; }
+}
+
+/* Buttons: never let long labels overflow their pill on narrow screens */
+.tl-primary-btn { max-width: 100%; white-space: normal; text-align: left; }
+@media (max-width: 480px) {
+    .header-btn-wrap .header-btn { padding: 10px 14px 10px 18px; font-size: 14px; }
+    .header-contact { display: none !important; }
+}
+
+/* Header spacing on small/medium screens so the logo, hamburger and CTA
+   never crowd or overlap each other */
+@media (max-width: 992px) {
+    .header .primary-header-inner { flex-wrap: nowrap; }
+    .header-right-wrap { gap: 6px; }
+    .header .primary-header-inner .header-right-wrap .header-btn-wrap { margin-right: 4px; }
+}
+@media (max-width: 575px) {
+    .header .primary-header-inner .header-logo img { width: 140px !important; max-width: 140px !important; }
+}
+
+/* Value / story / service grids: confirmed single-column stacking on phones */
+@media (max-width: 420px) {
+    .har-story-strip .har-story-item { flex: 1 1 100%; }
+}
+
+/* Odometer counters and process numbers should never overflow their box */
+.counter-item .title { word-break: break-word; }
+
+/* Tables/wide content (if any is added later) never break layout */
+table { max-width: 100%; display: block; overflow-x: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
