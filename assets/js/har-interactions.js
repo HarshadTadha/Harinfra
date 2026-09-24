@@ -167,4 +167,70 @@
         window.addEventListener("load", function () { setTimeout(initOps, 300); });
         document.addEventListener("DOMContentLoaded", initSidebarDismiss);
     }
+
+    /* ----------------------------------------------------------------------
+       Hash-anchor scrolling under GSAP ScrollSmoother.
+       ScrollSmoother replaces native page scroll with a transformed wrapper,
+       so a plain "#section" URL (typed, deep-linked from another page, or
+       clicked while already on the page) no longer lands in the right place
+       on its own. This retargets both cases through ScrollSmoother's own
+       scrollTo when available, falling back to a plain offset scroll.
+       ---------------------------------------------------------------------- */
+    function scrollToHashTarget(id) {
+        var target = document.getElementById(id);
+        if (!target) return false;
+        var smoother = (typeof ScrollSmoother !== "undefined") ? ScrollSmoother.get() : null;
+        var offset = window.innerWidth < 992 ? 80 : 110;
+        if (smoother) {
+            smoother.scrollTo(target, true, "top " + offset + "px");
+        } else if (typeof gsap !== "undefined" && gsap.to) {
+            gsap.to(window, { duration: 0.9, scrollTo: { y: target, offsetY: offset } });
+        } else {
+            var y = target.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top: y, behavior: "smooth" });
+        }
+        return true;
+    }
+
+    function initHashScroll() {
+        if (location.hash) {
+            var id = location.hash.slice(1);
+            var attempts = 0;
+            var tryScroll = function () {
+                attempts++;
+                var ok = document.getElementById(id) &&
+                    (typeof ScrollSmoother === "undefined" || ScrollSmoother.get());
+                if (ok) {
+                    scrollToHashTarget(id);
+                } else if (attempts < 40) {
+                    setTimeout(tryScroll, 100);
+                }
+            };
+            setTimeout(tryScroll, 350);
+        }
+
+        document.addEventListener("click", function (e) {
+            var link = e.target.closest('a[href*="#"]');
+            if (!link) return;
+            var href = link.getAttribute("href") || "";
+            var hashIndex = href.indexOf("#");
+            if (hashIndex === -1) return;
+            var path = href.slice(0, hashIndex);
+            var id = href.slice(hashIndex + 1);
+            if (!id) return;
+            var samePage = path === "" || path === location.pathname.split("/").pop();
+            if (!samePage) return;
+            if (!document.getElementById(id)) return;
+            e.preventDefault();
+            document.body.classList.remove("open-sidebar");
+            history.pushState(null, "", "#" + id);
+            scrollToHashTarget(id);
+        });
+    }
+
+    if (document.readyState === "complete") {
+        initHashScroll();
+    } else {
+        window.addEventListener("load", initHashScroll);
+    }
 })();
