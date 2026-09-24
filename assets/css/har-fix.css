@@ -159,7 +159,7 @@ p, li, .har-field label { -webkit-font-smoothing: antialiased; }
 /* Universal safety net: nothing should ever force horizontal scroll */
 html, body { overflow-x: hidden; }
 img, svg, video, canvas { max-width: 100%; height: auto; }
-.container, .container-2, .row { max-width: 100%; }
+.container, .container-2 { max-width: 100%; }
 
 /* Fluid type for the biggest headings so they scale smoothly between
    breakpoints instead of jumping at fixed widths (fixes odd tablet/

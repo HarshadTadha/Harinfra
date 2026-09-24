@@ -1,0 +1,123 @@
+/* HAR Trading Company showcase */
+.har-trading-intro {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 48px;
+    align-items: center;
+    margin: 10px 0 70px;
+    padding: 40px;
+    background: #fff;
+    border: 1px solid rgba(0, 60, 6, .12);
+    border-radius: 18px;
+    box-shadow: 0 24px 60px rgba(6, 40, 13, .08);
+}
+
+.har-trading-logo {
+    background: #f6f3ea;
+    border-radius: 14px;
+    padding: 12px;
+    border-bottom: 3px solid #b59a61;
+}
+
+.har-trading-logo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.har-trading-copy .har-tag {
+    display: inline-block;
+    color: #b59a61;
+    font-weight: 700;
+    letter-spacing: .18em;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.har-trading-copy h3 {
+    color: #003c06;
+    font-size: 30px;
+    line-height: 1.25;
+    margin-bottom: 16px;
+}
+
+.har-trading-copy p {
+    color: #3d4a41;
+    margin-bottom: 14px;
+}
+
+.har-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.har-chip-row span {
+    padding: 7px 16px;
+    border-radius: 30px;
+    background: #e8eee8;
+    color: #003c06;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.har-trading-pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 70px;
+}
+
+.har-trading-pillars div {
+    padding: 28px;
+    color: #fff;
+    border-radius: 16px;
+    background: linear-gradient(165deg, #04180a 0%, #072a10 55%, #0b3a17 100%);
+    border-top: 3px solid #b59a61;
+}
+
+.har-trading-pillars h4 {
+    color: #d8bd7a;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.har-trading-pillars p {
+    color: rgba(255, 255, 255, .82);
+    margin: 0;
+}
+
+.har-trading-slogan {
+    text-align: center;
+    margin-top: 60px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #003c06;
+    letter-spacing: .04em;
+}
+
+.har-trading-slogan small {
+    display: block;
+    margin-top: 6px;
+    font-size: 14px;
+    color: #b59a61;
+    letter-spacing: .14em;
+}
+
+@media (max-width: 991px) {
+    .har-trading-intro {
+        grid-template-columns: 1fr;
+        padding: 26px;
+        gap: 28px;
+    }
+
+    .har-trading-logo {
+        max-width: 300px;
+    }
+
+    .har-trading-pillars {
+        grid-template-columns: 1fr;
+    }
+}

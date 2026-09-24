@@ -80,7 +80,7 @@ body { background: #f7f6f2; color: var(--tl-color-text-body); }
     backdrop-filter: blur(12px);
 }
 .slider-content-wrap .section-heading .section-title {
-    max-width: 980px;
+    max-width: 990px;
     font-size: 88px;
     line-height: .98;
     letter-spacing: -.025em;
@@ -93,6 +93,16 @@ body { background: #f7f6f2; color: var(--tl-color-text-body); }
     max-width: 650px;
     color: rgba(255,255,255,.86);
 }
+
+@media (max-width: 1399px) {
+    .slider-content-wrap .bottom-content .antra-desc p {
+    font-size: 18px;
+    line-height: 1.65;
+    max-width: 545px;
+    color: rgba(255,255,255,.86);
+}
+}
+
 .slider-item .slider-element-wrap { right: 58px; bottom: 58px; max-width: 530px; }
 .slider-item .slider-element-wrap .slider-element {
     background: rgba(4, 31, 11, .56);
