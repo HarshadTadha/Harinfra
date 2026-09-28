@@ -24,6 +24,7 @@
     display: inline-flex;
     align-items: center;
     line-height: 0;
+    gap: 16px;
 }
 .header .primary-header-inner .header-logo img {
     width: 182px;
@@ -115,7 +116,7 @@
     padding: 46px 44px 56px;
 }
 @media (max-width: 575px) {
-    #sidebar-area .side-menu-content { padding: 40px 26px 48px; }
+    #sidebar-area .side-menu-content { padding: 84px 26px 48px; }
 }
 
 /* Close button */
@@ -131,7 +132,7 @@
     border: 1px solid rgba(255, 255, 255, .22);
     background: rgba(255, 255, 255, .04);
     transition: background .3s ease, border-color .3s ease, transform .3s ease;
-    z-index: 3;
+    z-index: 5;
 }
 #sidebar-area .sidebar-trigger.close:hover {
     background: var(--har-gold-soft);
@@ -375,10 +376,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    flex-wrap: wrap;
+    gap: 12px 16px;
     margin-bottom: 30px;
 }
-.mobile-side-menu .side-menu-head img { width: 168px !important; max-width: 168px !important; }
+.mobile-side-menu .side-menu-head a { min-width: 0; flex-wrap: wrap; row-gap: 8px; }
+.mobile-side-menu .side-menu-head img { width: 128px !important; max-width: 128px !important; }
 .mobile-side-menu .mobile-side-menu-close {
     flex: 0 0 40px;
     width: 40px;
@@ -971,4 +974,39 @@
 }
 @media (max-width: 767px) {
     .footer-address .number { font-size: 22px; }
+}
+
+/* =========================================================================
+   Dual brand lockup — HAR GROUP wordmark + HAR INFRA lockup shown together
+   in the header, footer and both off-canvas menus. The HAR INFRA mark is
+   sized smaller, by height, and set off with a divider so it reads as a
+   secondary mark next to the primary HAR GROUP logo.
+   ========================================================================= */
+.footer-logo a,
+#sidebar-area .side-menu-logo a.dark-img,
+.mobile-side-menu .side-menu-head a {
+    display: flex !important;
+    align-items: center;
+    gap: 16px;
+}
+#sidebar-area .side-menu-logo a.dark-img { flex-wrap: wrap; row-gap: 10px; }
+.har-infra-mark,
+.header .primary-header-inner .header-logo .har-infra-mark,
+.footer-logo .har-infra-mark,
+#sidebar-area .side-menu-logo .har-infra-mark,
+.mobile-side-menu .side-menu-head .har-infra-mark {
+    width: auto !important;
+    max-width: none !important;
+    padding-left: 16px;
+    border-left: 1px solid rgba(255, 255, 255, .28);
+    opacity: .92;
+}
+.header .primary-header-inner .header-logo .har-infra-mark { height: 30px !important; }
+.footer-logo .har-infra-mark { height: 36px !important; }
+#sidebar-area .side-menu-logo .har-infra-mark { height: 26px !important; }
+.mobile-side-menu .side-menu-head .har-infra-mark { height: 20px !important; padding-left: 12px; }
+
+@media (max-width: 575px) {
+    .header .primary-header-inner .header-logo a { gap: 10px; }
+    .header .primary-header-inner .header-logo .har-infra-mark { height: 22px !important; padding-left: 10px; }
 }

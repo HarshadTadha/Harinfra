@@ -222,6 +222,10 @@ ul {
     opacity: 1
 }
 
+i.fa-regular.fa-xmark {
+    color: #fff;
+}
+
 .container {
     max-width: 1795px
 }
