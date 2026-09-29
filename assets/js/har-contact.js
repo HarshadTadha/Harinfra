@@ -1,39 +1,18 @@
 /* =========================================================================
-   HAR INFRA + HAR TRADING COMPANY — Contact delivery
-   Sends the contact form and the home-page enquiry strip straight to the
-   business inbox. No server needed: the submission is posted as JSON to
-   FormSubmit's AJAX endpoint, which relays it as an email — works on any
-   static host (Netlify, GitHub Pages, Hostinger, anywhere) with zero
-   backend setup.
-
-   ── ONE-TIME ACTIVATION ──────────────────────────────────────────────────
-   The very first time a message is ever sent, FormSubmit emails HAR_INBOX
-   a confirmation link ("Activate Form" or similar). Click it once and every
-   later submission is delivered silently. Until it is clicked, FormSubmit
-   rejects every submission outright — it is not held, it fails — so if
-   nothing arrives after a first test, check that inbox (and spam) for the
-   activation email first.
-
-   ── EMAIL PRESENTATION ───────────────────────────────────────────────────
-   _template: "table" lays every field out as a proper bordered table in
-   the notification email — FormSubmit's free tier only offers 3 fixed
-   layouts ("table" / "box" / "basic"), so a fully custom-branded HTML
-   template (logo/colours inside the email) isn't possible on this plan;
-   "table" is the one that actually matches "show the data in a table".
-
-   ── VERIFIED BEHAVIOUR (checked directly against FormSubmit's live
-      endpoint, not assumed) ────────────────────────────────────────────
-     • A page opened as a local file (file://...) gets rejected outright —
-       caught here before even attempting the request.
-     • _autoresponse (an automatic email back to the visitor) does not work
-       over AJAX submissions, so the "thank you" confirmation here is a
-       same-page message, not a separate email to the visitor.
+   HAR INFRA — Contact delivery
+   Sends the contact form and the home-page enquiry strip to your own mail
+   server (api/send.php on the Prayag Enterprises Hostinger hosting), which
+   emails it by SMTP using the "harinfra" settings and the HAR email design
+   in api/config.php and api/templates/harinfra/.
    ========================================================================= */
 (function () {
     "use strict";
 
     var HAR_INBOX = "harinfra7@gmail.com";
-    var HAR_ENDPOINT = "https://formsubmit.co/ajax/" + HAR_INBOX;
+    /* Your own mail server on the Prayag Enterprises Hostinger hosting.
+       CHANGE the domain below to your real Prayag domain. */
+    var HAR_ENDPOINT = "https://prayagenterprises.com/api/send.php";
+    var HAR_SITE = "harinfra";
 
     /* ---------------------------------------------------------------- utils */
     function $(sel, root) { return (root || document).querySelector(sel); }
@@ -91,15 +70,7 @@
         var reason = (err && err.harReason) || "";
         var lower = reason.toLowerCase();
         if (reason === "file-protocol") {
-            return "This page is open as a local file (its address starts with \"file://\"), and FormSubmit " +
-                "cannot deliver from a page opened that way — it only works once the site is served over " +
-                "http:// or https:// (your live domain).";
-        }
-        if (lower.indexOf("confirm") > -1 || lower.indexOf("activat") > -1 || lower.indexOf("verify") > -1) {
-            return "Your message could not be delivered yet because this form's inbox " +
-                "(" + HAR_INBOX + ") has not confirmed FormSubmit's one-time activation email. " +
-                "Please check that inbox (and its spam folder) for an email from FormSubmit titled something like " +
-                "“Activate Form” and click the link in it — every submission before that point is rejected, not just held.";
+            return "This page is open as a local file. The form works on the live website (https://harinfra.com).";
         }
         if (reason === "network") {
             return "We could not reach the delivery service — please check your internet connection and try again.";
@@ -110,13 +81,24 @@
         return "We could not send your message automatically.";
     }
 
+    /* Map the form payload to the field names the mail server uses */
+    function toApi(p) {
+        return {
+            site: HAR_SITE,
+            name: p["Full Name"] || "",
+            email: p["Email Address"] || "",
+            phone: p["Phone Number"] || "",
+            enquiry_type: p["Enquiry Type"] || "",
+            message: p["Message"] || "",
+            source: p["Source"] || "Contact page",
+            page: p["Page"] || window.location.href
+        };
+    }
+
     function post(payload) {
-        /* FormSubmit's endpoint rejects requests from a page opened as a
-           local file with a 500 error and no useful message — verified
-           directly against their live endpoint. Catch that up front with a
-           message that actually names the cause. */
+        /* The form only works on the live website, not from a local file. */
         if (window.location.protocol === "file:") {
-            console.error("HAR contact form: page is open via file:// — FormSubmit cannot deliver from a local file.");
+            console.error("HAR contact form: page is open via file:// — the form only works on the live website.");
             var fileErr = new Error("Opened as a local file");
             fileErr.harReason = "file-protocol";
             return Promise.reject(fileErr);
@@ -127,12 +109,12 @@
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             },
-            body: JSON.stringify(payload)
+            body: JSON.stringify(toApi(payload))
         }).then(function (res) {
             return res.json().catch(function () { return {}; }).then(function (data) {
-                if (!res.ok || String(data.success) === "false") {
-                    var reason = data.message || ("HTTP " + res.status);
-                    console.error("HAR contact form: FormSubmit rejected the submission —", reason, data);
+                if (!res.ok || data.ok === false) {
+                    var reason = data.error || ("HTTP " + res.status);
+                    console.error("HAR contact form: mail server rejected the submission —", reason, data);
                     var err = new Error(reason);
                     err.harReason = reason;
                     throw err;
