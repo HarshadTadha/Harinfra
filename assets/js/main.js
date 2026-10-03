@@ -355,7 +355,8 @@
         viewButton.remove();
       };
     }
-    customCursor();
+    // Custom cursor disabled — the site uses the default system cursor.
+    // customCursor();
 
     // Price range slider
     var priceRange = $("#price-range"),
