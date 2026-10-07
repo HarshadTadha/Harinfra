@@ -1010,3 +1010,19 @@
     .header .primary-header-inner .header-logo a { gap: 10px; }
     .header .primary-header-inner .header-logo .har-infra-mark { height: 22px !important; padding-left: 10px; }
 }
+
+/* Home hero — first slide uses the HAR Infra poster artwork.
+   Square artwork: centre it and keep it covering the slide, with a dark
+   wash so the white headline and copy stay readable over the photos. */
+.slider-item .bg-img.har-hero-poster {
+    background-position: center center;
+    background-size: cover;
+    background-color: #06180d;
+}
+.slider-item .bg-img.har-hero-poster::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(4, 24, 10, .88) 0%, rgba(4, 24, 10, .55) 55%, rgba(4, 24, 10, .25) 100%);
+    pointer-events: none;
+}
